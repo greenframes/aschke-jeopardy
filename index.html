@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="BFE Jeopardy">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>BFE Jeopardy</title>
+    <title>BFE Messe Jeopardy</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -15,30 +15,26 @@
     <main class="app-shell">
       <header class="topbar">
         <div class="title-lockup">
-          <p class="eyebrow">BFE Jeopardy 2026</p>
+          <p class="eyebrow">Messe-Challenge</p>
           <h1>Pflege Jeopardy</h1>
         </div>
         <img class="brand-logo" src="logo-pflegeschule.png" alt="Pflegeschule Logo">
       </header>
 
-      <section class="scorebar" aria-label="Punktestand">
-        <article class="team-panel">
-          <input id="teamOneName" class="team-name" value="Team 1" aria-label="Name Team 1">
-          <div class="score-row">
-            <button class="score-adjust" data-team="0" data-delta="-100" aria-label="Team 1 minus 100">-</button>
-            <strong id="teamOneScore">0</strong>
-            <button class="score-adjust" data-team="0" data-delta="100" aria-label="Team 1 plus 100">+</button>
-          </div>
+      <section class="statusbar" aria-label="Spielstatus">
+        <article class="stat-block score-block">
+          <span>Score</span>
+          <strong id="scoreValue">0</strong>
         </article>
-        <article class="team-panel">
-          <input id="teamTwoName" class="team-name" value="Team 2" aria-label="Name Team 2">
-          <div class="score-row">
-            <button class="score-adjust" data-team="1" data-delta="-100" aria-label="Team 2 minus 100">-</button>
-            <strong id="teamTwoScore">0</strong>
-            <button class="score-adjust" data-team="1" data-delta="100" aria-label="Team 2 plus 100">+</button>
-          </div>
+        <article class="stat-block">
+          <span>Fragen</span>
+          <strong id="progressValue">0/10</strong>
         </article>
-        <button id="resetGame" class="ghost-button" type="button">Neu starten</button>
+        <article class="stat-block">
+          <span>Max</span>
+          <strong>1500</strong>
+        </article>
+        <button id="resetGame" class="reset-button" type="button">Neue Runde</button>
       </section>
 
       <section id="board" class="board" aria-label="Jeopardy Spielfeld"></section>
@@ -54,9 +50,9 @@
           <button id="closeDialog" class="icon-button" type="button" aria-label="Schließen">×</button>
         </header>
 
-        <div class="timer-panel">
+        <div class="play-row">
           <div class="timer-ring" aria-live="polite">
-            <span id="timerValue">60</span>
+            <span id="timerValue">45</span>
           </div>
           <div class="timer-actions">
             <button id="startTimer" type="button">Start</button>
@@ -70,10 +66,10 @@
           <button id="revealAnswer" class="primary-button" type="button">Lösung anzeigen</button>
         </section>
 
-        <footer class="award-actions">
-          <button id="awardTeamOne" class="award-button" type="button"></button>
-          <button id="awardTeamTwo" class="award-button" type="button"></button>
-          <button id="markPlayed" class="ghost-button" type="button">Ohne Punkte schließen</button>
+        <footer class="result-actions">
+          <button id="awardPlayer" class="award-button" type="button">Richtig</button>
+          <button id="missQuestion" class="miss-button" type="button">Falsch / weiter</button>
+          <button id="keepQuestion" class="ghost-button" type="button">Zurücklegen</button>
         </footer>
       </div>
     </dialog>

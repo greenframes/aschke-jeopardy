@@ -76,8 +76,9 @@ const QUESTIONS = [
   }
 ];
 
-const STORAGE_KEY = "bfe-jeopardy-state-v1";
-const TIMER_START = 60;
+const STORAGE_KEY = "bfe-jeopardy-solo-v2";
+const TIMER_START = 45;
+const TOTAL_QUESTIONS = QUESTIONS.reduce((sum, category) => sum + category.items.length, 0);
 
 const els = {
   board: document.querySelector("#board"),
@@ -91,18 +92,12 @@ const els = {
   startTimer: document.querySelector("#startTimer"),
   pauseTimer: document.querySelector("#pauseTimer"),
   resetTimer: document.querySelector("#resetTimer"),
-  markPlayed: document.querySelector("#markPlayed"),
-  awardTeamOne: document.querySelector("#awardTeamOne"),
-  awardTeamTwo: document.querySelector("#awardTeamTwo"),
+  keepQuestion: document.querySelector("#keepQuestion"),
+  awardPlayer: document.querySelector("#awardPlayer"),
+  missQuestion: document.querySelector("#missQuestion"),
   resetGame: document.querySelector("#resetGame"),
-  teamNames: [
-    document.querySelector("#teamOneName"),
-    document.querySelector("#teamTwoName")
-  ],
-  teamScores: [
-    document.querySelector("#teamOneScore"),
-    document.querySelector("#teamTwoScore")
-  ]
+  scoreValue: document.querySelector("#scoreValue"),
+  progressValue: document.querySelector("#progressValue")
 };
 
 let state = loadState();
@@ -114,10 +109,7 @@ let timer = {
 
 function defaultState() {
   return {
-    teams: [
-      { name: "Team 1", score: 0 },
-      { name: "Team 2", score: 0 }
-    ],
+    score: 0,
     answered: {}
   };
 }
@@ -137,6 +129,10 @@ function saveState() {
 
 function questionId(categoryIndex, itemIndex) {
   return `${categoryIndex}-${itemIndex}`;
+}
+
+function answeredCount() {
+  return Object.keys(state.answered).length;
 }
 
 function renderBoard() {
@@ -167,15 +163,12 @@ function renderBoard() {
   });
 }
 
-function renderScore() {
-  state.teams.forEach((team, index) => {
-    els.teamNames[index].value = team.name;
-    els.teamScores[index].textContent = team.score;
-  });
+function renderStatus() {
+  els.scoreValue.textContent = state.score;
+  els.progressValue.textContent = `${answeredCount()}/${TOTAL_QUESTIONS}`;
 
   if (activeQuestion) {
-    els.awardTeamOne.textContent = `${state.teams[0].name} richtig +${activeQuestion.value}`;
-    els.awardTeamTwo.textContent = `${state.teams[1].name} richtig +${activeQuestion.value}`;
+    els.awardPlayer.textContent = `Richtig +${activeQuestion.value}`;
   }
 }
 
@@ -194,10 +187,10 @@ function openQuestion(categoryIndex, itemIndex) {
 
   els.questionMeta.textContent = `${activeQuestion.category} · ${activeQuestion.value} Punkte`;
   els.questionTitle.textContent = activeQuestion.question;
-  els.answerText.textContent = "Antwort ist verdeckt.";
+  els.answerText.textContent = "Antwort ist noch verdeckt.";
   els.answerText.classList.add("is-hidden");
   els.revealAnswer.hidden = false;
-  renderScore();
+  renderStatus();
 
   if (typeof els.dialog.showModal === "function") {
     els.dialog.showModal();
@@ -217,7 +210,7 @@ function closeQuestion(markAnswered = false) {
   activeQuestion = null;
   els.dialog.close();
   renderBoard();
-  renderScore();
+  renderStatus();
 }
 
 function revealAnswer() {
@@ -227,16 +220,14 @@ function revealAnswer() {
   els.revealAnswer.hidden = true;
 }
 
-function award(teamIndex) {
+function awardPlayer() {
   if (!activeQuestion) return;
-  state.teams[teamIndex].score += activeQuestion.value;
+  state.score += activeQuestion.value;
   closeQuestion(true);
 }
 
-function adjustScore(teamIndex, delta) {
-  state.teams[teamIndex].score += delta;
-  saveState();
-  renderScore();
+function missQuestion() {
+  closeQuestion(true);
 }
 
 function startTimer() {
@@ -269,43 +260,24 @@ function renderTimer() {
 }
 
 function resetGame() {
-  const shouldReset = window.confirm("Spielstand und gespielte Fragen zurücksetzen?");
+  const shouldReset = window.confirm("Neue Runde starten und Score zurücksetzen?");
   if (!shouldReset) return;
 
-  const names = state.teams.map((team) => team.name);
   state = defaultState();
-  state.teams.forEach((team, index) => {
-    team.name = names[index] || team.name;
-  });
-
   saveState();
   renderBoard();
-  renderScore();
+  renderStatus();
 }
 
 els.revealAnswer.addEventListener("click", revealAnswer);
 els.closeDialog.addEventListener("click", () => closeQuestion(false));
-els.markPlayed.addEventListener("click", () => closeQuestion(true));
-els.awardTeamOne.addEventListener("click", () => award(0));
-els.awardTeamTwo.addEventListener("click", () => award(1));
+els.keepQuestion.addEventListener("click", () => closeQuestion(false));
+els.awardPlayer.addEventListener("click", awardPlayer);
+els.missQuestion.addEventListener("click", missQuestion);
 els.startTimer.addEventListener("click", startTimer);
 els.pauseTimer.addEventListener("click", stopTimer);
 els.resetTimer.addEventListener("click", resetTimer);
 els.resetGame.addEventListener("click", resetGame);
-
-document.querySelectorAll(".score-adjust").forEach((button) => {
-  button.addEventListener("click", () => {
-    adjustScore(Number(button.dataset.team), Number(button.dataset.delta));
-  });
-});
-
-els.teamNames.forEach((input, index) => {
-  input.addEventListener("input", () => {
-    state.teams[index].name = input.value.trim() || `Team ${index + 1}`;
-    saveState();
-    renderScore();
-  });
-});
 
 els.dialog.addEventListener("cancel", (event) => {
   event.preventDefault();
@@ -332,4 +304,4 @@ if ("serviceWorker" in navigator) {
 }
 
 renderBoard();
-renderScore();
+renderStatus();

@@ -1,5 +1,5 @@
 {
-  "name": "BFE Pflege Jeopardy",
+  "name": "BFE Messe Jeopardy",
   "short_name": "BFE Jeopardy",
   "description": "Offline spielbares Pflege-Jeopardy für iPad.",
   "start_url": "./index.html",
@@ -9,7 +9,7 @@
   "orientation": "any",
   "icons": [
     {
-      "src": "assets/logo-pflegeschule.png",
+      "src": "logo-pflegeschule.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"

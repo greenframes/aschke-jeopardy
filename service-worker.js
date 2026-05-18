@@ -1,11 +1,11 @@
-const CACHE_NAME = "bfe-jeopardy-v2";
+const CACHE_NAME = "bfe-jeopardy-v3";
 const APP_ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
-  "./assets/logo-pflegeschule.png"
+  "./logo-pflegeschule.png"
 ];
 
 self.addEventListener("install", (event) => {
