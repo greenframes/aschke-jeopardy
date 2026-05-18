@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f39ca5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BFE Jeopardy">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>BFE Jeopardy</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="title-lockup">
+          <p class="eyebrow">BFE Jeopardy 2026</p>
+          <h1>Pflege Jeopardy</h1>
+        </div>
+        <img class="brand-logo" src="assets/logo-pflegeschule.png" alt="Pflegeschule Logo">
+      </header>
+
+      <section class="scorebar" aria-label="Punktestand">
+        <article class="team-panel">
+          <input id="teamOneName" class="team-name" value="Team 1" aria-label="Name Team 1">
+          <div class="score-row">
+            <button class="score-adjust" data-team="0" data-delta="-100" aria-label="Team 1 minus 100">-</button>
+            <strong id="teamOneScore">0</strong>
+            <button class="score-adjust" data-team="0" data-delta="100" aria-label="Team 1 plus 100">+</button>
+          </div>
+        </article>
+        <article class="team-panel">
+          <input id="teamTwoName" class="team-name" value="Team 2" aria-label="Name Team 2">
+          <div class="score-row">
+            <button class="score-adjust" data-team="1" data-delta="-100" aria-label="Team 2 minus 100">-</button>
+            <strong id="teamTwoScore">0</strong>
+            <button class="score-adjust" data-team="1" data-delta="100" aria-label="Team 2 plus 100">+</button>
+          </div>
+        </article>
+        <button id="resetGame" class="ghost-button" type="button">Neu starten</button>
+      </section>
+
+      <section id="board" class="board" aria-label="Jeopardy Spielfeld"></section>
+    </main>
+
+    <dialog id="questionDialog" class="question-dialog" aria-labelledby="questionTitle">
+      <div class="dialog-grid">
+        <header class="question-header">
+          <div>
+            <p id="questionMeta" class="question-meta"></p>
+            <h2 id="questionTitle"></h2>
+          </div>
+          <button id="closeDialog" class="icon-button" type="button" aria-label="Schließen">×</button>
+        </header>
+
+        <div class="timer-panel">
+          <div class="timer-ring" aria-live="polite">
+            <span id="timerValue">60</span>
+          </div>
+          <div class="timer-actions">
+            <button id="startTimer" type="button">Start</button>
+            <button id="pauseTimer" type="button">Pause</button>
+            <button id="resetTimer" type="button">Reset</button>
+          </div>
+        </div>
+
+        <section class="answer-panel">
+          <p id="answerText" class="answer-text is-hidden"></p>
+          <button id="revealAnswer" class="primary-button" type="button">Lösung anzeigen</button>
+        </section>
+
+        <footer class="award-actions">
+          <button id="awardTeamOne" class="award-button" type="button"></button>
+          <button id="awardTeamTwo" class="award-button" type="button"></button>
+          <button id="markPlayed" class="ghost-button" type="button">Ohne Punkte schließen</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
