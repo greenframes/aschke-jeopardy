@@ -50,27 +50,32 @@
           <button id="closeDialog" class="icon-button" type="button" aria-label="Schließen">×</button>
         </header>
 
-        <div class="play-row">
-          <div class="timer-ring" aria-live="polite">
-            <span id="timerValue">45</span>
-          </div>
-          <div class="timer-actions">
-            <button id="startTimer" type="button">Start</button>
-            <button id="pauseTimer" type="button">Pause</button>
-            <button id="resetTimer" type="button">Reset</button>
-          </div>
-        </div>
-
         <section class="answer-panel">
+          <p class="answer-label">Lösung</p>
           <p id="answerText" class="answer-text is-hidden"></p>
           <button id="revealAnswer" class="primary-button" type="button">Lösung anzeigen</button>
         </section>
 
         <footer class="result-actions">
           <button id="awardPlayer" class="award-button" type="button">Richtig</button>
-          <button id="missQuestion" class="miss-button" type="button">Falsch / weiter</button>
+          <button id="missQuestion" class="miss-button" type="button">Falsch</button>
           <button id="keepQuestion" class="ghost-button" type="button">Zurücklegen</button>
         </footer>
+      </div>
+    </dialog>
+
+    <dialog id="resultDialog" class="result-dialog" aria-labelledby="resultTitle">
+      <div class="result-dialog-grid">
+        <button id="resultClose" class="icon-button result-close" type="button" aria-label="Schließen">×</button>
+        <p class="result-kicker">Challenge abgeschlossen</p>
+        <h2 id="resultTitle"></h2>
+        <div class="result-score-card">
+          <span>Dein Score</span>
+          <strong id="resultScore">0 / 1500</strong>
+        </div>
+        <p id="resultQuote" class="result-quote"></p>
+        <p id="resultText" class="result-text"></p>
+        <button id="resultRestart" class="reset-button result-restart" type="button">Neue Runde starten</button>
       </div>
     </dialog>
 

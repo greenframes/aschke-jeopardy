@@ -1,4 +1,4 @@
-const CACHE_NAME = "bfe-jeopardy-v3";
+const CACHE_NAME = "bfe-jeopardy-v5";
 const APP_ASSETS = [
   "./",
   "./index.html",
